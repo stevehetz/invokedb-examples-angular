@@ -18,21 +18,21 @@ Follow the steps below to setup invokedb and get the angular application running
    3. Select the downloaded `csv` file from your local machine
    4. Click the upload button
    5. The file will be queued for processing and should be ready shortly
-3. The name of the files must `Todo`, `WineReview` and `Contacts`. Case does not matter.
+3. The name of the files must be `Todo`, `WineReview` and `Contacts`. Case does not matter.
 4. Open up the `WineReview` table when it's ready and make the following changes
    1. Click on `Edit Columns`
-   2. Add an index to `Title`, `Price` and `Points` columns. (Click the `i` button icon)
-   3. Change `Price` and `Points` columns from a type string (`""`) to a type number (`#`)
+   2. Add an index to `title`, `price` and `points` columns. (Click the `i` button icon)
+   3. Change `price` and `points` columns from a type string (`""`) to a type number (`#`)
    4. Click the disk icon to save
    5. The file will be queued for processing
 
-
 ### Run angular examples application
 1. Clone this repo to your local machine
-2. Under `src/` create a file named `invoke-config.json`
-3. Copy/paste the contents from `invoke-config-example.json`
-4. Update the api_key value
+2. Open up the repo with an editor of your choice
+3. Under `src/` create a file named `invoke-config.json`
+4. Copy/paste the contents from `invoke-config-example.json`
+5. Update the api_key value
    1. Your api_key can be found at https://db.invokedb.com/account
-5. Run `npm install`
-6. Run `npm start`
-7. Browse to http://localhost:4200
+6. Run `npm install`
+7. Run `npm start`
+8. Browse to http://localhost:4200
