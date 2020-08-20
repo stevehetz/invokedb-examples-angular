@@ -1,6 +1,7 @@
 # InvokeDB Examples
 
 ## Setup
+Follow the steps below to setup invokedb and get the angular application running.
 
 ### Create an Account
 1. Create an account at https://invokedb.com
