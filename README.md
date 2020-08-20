@@ -1,4 +1,4 @@
-# InvokeDB Examples
+# InvokeDB Examples with Angular
 
 ## Setup
 Follow the steps below to setup invokedb and get the angular application running.
