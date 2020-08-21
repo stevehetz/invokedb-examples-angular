@@ -9,7 +9,7 @@ Follow the steps below to setup invokedb and get the angular application running
 ### Setup InvokeDB with Sample Data
 1. Download the following sample csv files
    1. [Contacts](https://www.dl.dropboxusercontent.com/s/jomct80mzn84gy8/Contacts.csv)
-   2. [Todo](https://www.dl.dropboxusercontent.com/s/jbqefq73ad1bmx9/Todo.csv)  
+   2. [ToDo](https://www.dl.dropboxusercontent.com/s/jbqefq73ad1bmx9/ToDo.csv)  
    3. [WineReview](https://www.dl.dropboxusercontent.com/s/igq7pzormpiuss8/WineReview.csv)
 2. Browse to http://db.invokedb.com and make sure you are on the `Tables` page
 3. Follow the steps below to upload each file to your database
