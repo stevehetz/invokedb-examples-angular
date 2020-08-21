@@ -49,5 +49,5 @@ https://db.invokedb.com/api
 
 ## Support
 
-To get help with this repo please submit a new issue at https://github.com/stevehetz/invokedb-examples-angular/issues  
+To get help with this repo please enter a new issue at https://github.com/stevehetz/invokedb-examples-angular/issues  
 For questions and issues with the invokedb please submit a request at https://invokedb.com
