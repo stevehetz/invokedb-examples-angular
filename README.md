@@ -37,7 +37,7 @@ Follow the steps below to setup invokedb and get the angular application running
 2. Open up the repo with an editor of your choice
 3. Under `src/` create a file named `invoke-config.json`
 4. Copy over the contents from `invoke-config-example.json`
-5. Grab your api_key from db.invokedb.com/account and add it to `invoke-config.json`
+5. Grab your api_key on the [account](https://db.invokedb.com/account) page and add it to `invoke-config.json`
 6. Run `npm install`
 7. Run `npm start`
 8. Browse to http://localhost:4200
