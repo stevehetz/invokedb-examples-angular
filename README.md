@@ -28,7 +28,7 @@ Follow the steps below to setup invokedb and get the angular application running
    4. Click the disk icon to save
    5. The file will be queued for processing
 
-### Run angular examples application
+### Run angular application
 1. Clone this repo to your local machine
 2. Open up the repo with an editor of your choice
 3. Under `src/` create a file named `invoke-config.json`
