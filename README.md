@@ -18,7 +18,7 @@ Follow the steps below to setup invokedb and get the angular application running
    3. Select the downloaded `csv` file from your local machine
    4. Click the upload button
    5. The file will be queued for processing and should be ready shortly
-4. The name of the files must be `Todo`, `WineReview` and `Contacts`. Case does not matter.
+4. The name of the files must be `ToDo`, `WineReview` and `Contacts`. Case does not matter.
 5. Open up the `WineReview` table when it's ready and make the following changes
    1. Click on `Edit Columns`
    2. Add an index to `title`, `price` and `points` columns. (Click the `i` button icon)
