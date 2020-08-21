@@ -24,7 +24,7 @@ Follow the steps below to setup invokedb and get the angular application running
    1. Click on `Edit Columns`
    2. Add an index to `title`, `price` and `points` columns. (Click the `i` button icon)
       1. This will allow for faster querying
-   3. Change `price` and `points` columns from a type string (`""`) to a type number (`#`)
+   3. Change `price` and `points` columns from a type `string` (`""`) to a type `number` (`#`)
    4. Click the disk icon to save
    5. The file will be queued for processing
 
