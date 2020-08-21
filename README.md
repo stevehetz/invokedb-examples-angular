@@ -1,15 +1,18 @@
 # InvokeDB Examples with Angular
 
 ## Setup
+
 Follow the steps below to setup invokedb and get the angular application running.
 
 ### Create an account
+
 1. Create an account at https://invokedb.com
 
 ### Setup InvokeDB with sample data
+
 1. Download the following sample csv files
    1. [Contacts](https://www.dl.dropboxusercontent.com/s/jomct80mzn84gy8/Contacts.csv)
-   2. [ToDo](https://www.dl.dropboxusercontent.com/s/jbqefq73ad1bmx9/ToDo.csv)  
+   2. [ToDo](https://www.dl.dropboxusercontent.com/s/jbqefq73ad1bmx9/ToDo.csv)
    3. [WineReview](https://www.dl.dropboxusercontent.com/s/igq7pzormpiuss8/WineReview.csv)
 2. Browse to https://db.invokedb.com and make sure you are on the `Tables` page
 3. Follow the steps below to upload each file to your database
@@ -29,11 +32,12 @@ Follow the steps below to setup invokedb and get the angular application running
    5. The file will be queued for processing
 
 ### Run angular application
+
 1. Clone this repo to your local machine
 2. Open up the repo with an editor of your choice
 3. Under `src/` create a file named `invoke-config.json`
 4. Copy over the contents from `invoke-config-example.json`
-5. Grab your api_key from https://db.invokedb.com/account and add it to `invoke-config.json`
+5. Grab your api_key from db.invokedb.com/account and add it to `invoke-config.json`
 6. Run `npm install`
 7. Run `npm start`
 8. Browse to http://localhost:4200
