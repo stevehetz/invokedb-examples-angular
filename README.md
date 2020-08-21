@@ -42,7 +42,7 @@ Follow the steps below to setup invokedb and get the angular application running
 7. Run `npm start`
 8. Browse to http://localhost:4200
 
-## Helpful Links
+## Additional documentation
 
 https://db.invokedb.com/guide  
 https://db.invokedb.com/api
