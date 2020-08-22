@@ -107,14 +107,14 @@
               <span class="form-control">
                 <label>DOB</label>
                 <input
-                  *ngIf="!editing"
+                  *ngIf="!editing && !adding"
                   [readonly]="!adding"
                   type="text"
                   pInputText
                   [(ngModel)]="selectedContact.prettyDate"
                 />
                 <input
-                  *ngIf="editing"
+                  *ngIf="editing || adding"
                   type="text"
                   pInputText
                   [(ngModel)]="selectedContact.dob"
