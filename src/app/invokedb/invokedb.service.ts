@@ -13,11 +13,11 @@ export class InvokedbService {
     return new HttpHeaders().set('Authorization', `Bearer ${API_KEY}`);
   }
 
-  get(tableName: string, params: IGetParams, filter?: any) {
+  get(table: string, params: IGetParams, filter?: any) {
     const { skip, limit, sort } = params;
 
-    let urlQuery = '';
-    urlQuery += `?skip=${skip}`;
+    let urlQuery = `table=${table}`;
+    urlQuery += `&skip=${skip}`;
     urlQuery += `&limit=${limit}`;
 
     if (sort) {
@@ -28,25 +28,28 @@ export class InvokedbService {
     const headers = this.getHeaders();
 
     return filter
-      ? this.http.post(`${BASE_URL}/search/${tableName}${urlQuery}`, filter, { headers })
-      : this.http.get(`${BASE_URL}/get/${tableName}${urlQuery}`, { headers });
+      ? this.http.post(`${BASE_URL}/search?${urlQuery}`, filter, { headers })
+      : this.http.get(`${BASE_URL}/get?${urlQuery}`, { headers });
   }
 
-  update(tableName: string, data: any) {
+  update(table: string, data: any) {
     const headers = this.getHeaders();
-    const url = `${BASE_URL}/update/${tableName}`;
+    const urlQuery = `table=${table}`;
+    const url = `${BASE_URL}/update?${urlQuery}`;
     return this.http.put(url, data, { headers });
   }
 
-  delete(tableName: string, data: any) {
+  delete(table: string, data: any) {
     const headers = this.getHeaders();
-    const url = `${BASE_URL}/delete/${tableName}`;
+    const urlQuery = `table=${table}`;
+    const url = `${BASE_URL}/delete?${urlQuery}`;
     return this.http.post(url, data, { headers });
   }
 
-  create(tableName: string, data: any) {
+  create(table: string, data: any) {
     const headers = this.getHeaders();
-    const url = `${BASE_URL}/create/${tableName}`;
+    const urlQuery = `table=${table}`;
+    const url = `${BASE_URL}/create?${urlQuery}`;
     return this.http.post(url, data, { headers });
   }
 }
