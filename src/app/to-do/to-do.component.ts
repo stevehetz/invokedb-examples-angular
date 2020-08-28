@@ -56,7 +56,6 @@ export class ToDoAppComponent implements OnInit {
 
   editItem(item) {
     if (item) {
-      console.log(item);
       item.edit = true;
       item.cached = item.name;
     }
