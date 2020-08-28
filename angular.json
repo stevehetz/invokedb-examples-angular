@@ -3,7 +3,7 @@
   "version": 1, 
   "newProjectRoot": "projects",
   "projects": {
-    "webdb-demo": {
+    "invokedb-demo": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/webdb-demo",
+            "outputPath": "dist/invokedb-demo",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -69,18 +69,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "webdb-demo:build"
+            "browserTarget": "invokedb-demo:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "webdb-demo:build:production"
+              "browserTarget": "invokedb-demo:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "webdb-demo:build"
+            "browserTarget": "invokedb-demo:build"
           }
         },
         "test": {
@@ -114,5 +114,5 @@
         }
       }
     }},
-  "defaultProject": "webdb-demo"
+  "defaultProject": "invokedb-demo"
 }
