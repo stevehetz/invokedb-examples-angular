@@ -12,6 +12,7 @@ export class ToDoAppComponent implements OnInit {
   items = [];
   showCompleted = true;
   updating = false;
+  toggling = false;
 
   constructor(private svc: ToDoService) {}
 
@@ -33,9 +34,15 @@ export class ToDoAppComponent implements OnInit {
     this.getItems().subscribe();
   }
 
-  onToggleItemClick(_id, isComplete) {
-    const item = { _id, isComplete };
-    this.updateItem(item).subscribe();
+  onToggleItemClick(item, isComplete) {
+    if (!this.toggling) {
+      item.isComplete = isComplete;
+      this.updateItem({ _id: item._id, isComplete }).subscribe();
+    }
+  }
+
+  updateItem(item) {
+    return concat(this.svc.update(item), this.getItems()).pipe();
   }
 
   addItem() {
@@ -48,10 +55,6 @@ export class ToDoAppComponent implements OnInit {
           complete: () => this.editItem(this.items[this.items.length - 1])
         });
     }
-  }
-
-  updateItem(item) {
-    return concat(this.svc.update(item), this.getItems());
   }
 
   editItem(item) {

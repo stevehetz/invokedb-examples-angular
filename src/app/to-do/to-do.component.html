@@ -24,14 +24,14 @@
         <div
           class="circle-wrapper"
           *ngIf="item.isComplete === 'no'"
-          (click)="onToggleItemClick(item._id, 'yes')"
+          (click)="onToggleItemClick(item, 'yes')"
         >
           <i class="icon--circle open far fa-circle"></i>
         </div>
         <div
           class="circle-wrapper"
           *ngIf="item.isComplete === 'yes'"
-          (click)="onToggleItemClick(item._id, 'no')"
+          (click)="onToggleItemClick(item, 'no')"
         >
           <i class="icon--circle closed fa fa-check-circle"></i>
         </div>
