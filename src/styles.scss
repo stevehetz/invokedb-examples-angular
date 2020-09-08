@@ -153,6 +153,7 @@ $CONTACT_FORM_BORDER_COLOR: #d7d7f1;
 .wine-review__page .info-bar {margin: 0 0 0 0; color:#444444;}
 .wine-review__page .info-bar label{margin-right:5px;}
 .wine-review__page .info-bar span{margin-top:1px;}
+.wine-review__page .ui-virtualscroller .ui-virtualscroller-item{margin: 10px;}
 .wine-review__page .ui-virtualscroller .cdk-virtual-scroll-orientation-vertical {overflow-y:scroll;}
 .wine-review__page .ui-virtualscroller .ui-virtualscroller-header {padding-top: 0;}
 .wine-review__page .ui-virtualscroller .loader{position:absolute;z-index:10;top:142px;left:0;width:calc(100% - 15px);height:calc(100% - 142px);display:flex;justify-content:center;padding-top:20px;}
@@ -167,7 +168,7 @@ $CONTACT_FORM_BORDER_COLOR: #d7d7f1;
 .wine-review__page .item__header__value{display:flex;align-items:center;justify-content:center;padding-left:5px;height:100%;}
 .wine-review__page .item__header .price{border-right:solid 1px #d6d6d6;background-color:lighten($SECONDARY_COLOR, 10%);color:#ffffff;height:100%;width:65px;font-size:16px;}
 .wine-review__page .item__header .points{background-color:$SECONDARY_COLOR;border-right:solid 1px #d6d6d6;width:90px;}
-.wine-review__page .item__body{padding:10px;}
+.wine-review__page .item__body{padding:10px;background-color:#ffffff;}
 .wine-review__page .item__body .col{display: flex;align-items: flex-start;}
 .wine-review__page .item__body .col label{margin-right:5px;}
 .wine-review__page .item__body .col span{margin-top:1px;}
