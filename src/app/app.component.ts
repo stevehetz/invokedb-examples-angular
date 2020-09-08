@@ -12,18 +12,42 @@ export class AppComponent implements OnInit {
     const invokedb = new InvokeDBClient({ apiKey: API_KEY });
     const contacts = invokedb.table('contacts');
 
-    const res = await contacts.get({
-      skip: 0,
-      limit: 10,
+    const res = await contacts.find({
+      skip: 10,
+      limit: 20,
+      sortBy: 'first_name',
+      sortDir: 'desc',
       filter: {
         first_name: {
-          value: 'Low',
-          type: 'contains',
-          case: 'insensitive'
+          value: 'L',
+          type: 'contains'
         }
       }
     });
 
-    console.log(res);
+    console.log(res.data);
+
+    const res2 = await contacts.findOne({
+      skip: 10,
+      sortBy: 'first_name',
+      sortDir: 'asc',
+      filter: {
+        first_name: {
+          value: 'L',
+          type: 'contains'
+        }
+      }
+    });
+
+    console.log(res2);
+
+    /*const res3 = await contacts.findOne({
+      first_name: {
+        contains: 'low',
+        case: 'i'
+      }
+    });
+
+    console.log(res3);*/
   }
 }
