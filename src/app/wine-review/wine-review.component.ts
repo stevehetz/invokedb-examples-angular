@@ -2,7 +2,7 @@ import { Component, ViewChild, AfterViewInit, OnInit } from '@angular/core';
 import { SORT_DIR, IGetParams } from 'src/app/invokedb/invokedb.params';
 import { WineReviewService, IBaseFilterOpts } from './wine-review.service';
 import { finalize } from 'rxjs/operators';
-import { Dropdown } from 'primeng/dropdown';
+import { VirtualScroller } from 'primeng/virtualscroller';
 
 @Component({
   selector: 'app-wine-review',
@@ -33,6 +33,7 @@ export class WineReviewComponent implements OnInit, AfterViewInit {
   ];
 
   @ViewChild('countryDropdown') countryDropdown: any;
+  @ViewChild('vs') vs: VirtualScroller;
   constructor(private svc: WineReviewService) {}
 
   ngOnInit() {
@@ -58,14 +59,19 @@ export class WineReviewComponent implements OnInit, AfterViewInit {
     this.sortByDir = SORT_DIR.ASC;
     this.priceRange = [0, 3300];
     this.pointRange = [87, 100];
+    if (this.vs) {
+      this.vs.scrollToIndex(0);
+    }
     this.loadWinesDebounce();
   }
 
   priceRangeChanged() {
+    this.vs.scrollToIndex(0);
     this.loadWinesDebounce();
   }
 
   pointRangeChanged() {
+    this.vs.scrollToIndex(0);
     this.loadWinesDebounce();
   }
 
@@ -98,6 +104,7 @@ export class WineReviewComponent implements OnInit, AfterViewInit {
     this.svc.getFilteredVarieties(filter).subscribe(varieties => {
       this.filteredVarieties = varieties;
       if (reload) {
+        this.vs.scrollToIndex(0);
         this.loadWinesDebounce();
       }
     });
@@ -110,6 +117,7 @@ export class WineReviewComponent implements OnInit, AfterViewInit {
     this.svc.getFilteredCountries(filter).subscribe(countries => {
       this.filteredCountries = countries;
       if (reload) {
+        this.vs.scrollToIndex(0);
         this.loadWinesDebounce();
       }
     });
@@ -118,6 +126,7 @@ export class WineReviewComponent implements OnInit, AfterViewInit {
   toggleSortDir() {
     this.sortByDir =
       this.sortByDir === SORT_DIR.ASC ? SORT_DIR.DESC : SORT_DIR.ASC;
+    this.vs.scrollToIndex(0);
     this.loadWinesDebounce();
   }
 
@@ -133,7 +142,10 @@ export class WineReviewComponent implements OnInit, AfterViewInit {
   }
 
   loadWines(event?) {
-    const skip = event ? event.first : 0;
+    let skip = 0;
+    if (event && event.first !== 0) {
+      skip = event.first - 30;
+    }
     const limit = this.limit;
     const sort = {
       sortBy: this.sortBy.value,
@@ -149,11 +161,14 @@ export class WineReviewComponent implements OnInit, AfterViewInit {
         finalize(() => (this.loading = false)),
         finalize(() => (this.loadWinesDebounceTimeout = null))
       )
-      .subscribe(res => this.onWineGetSuccess(res));
+      .subscribe(res => this.onWineGetSuccess(res, skip, limit));
   }
 
-  onWineGetSuccess(res: any) {
-    this.wines = res.data;
+  onWineGetSuccess(res: any, skip, limit) {
+    this.vs.clearCache();
+    this.wines = Array.from({ length: res.count });
+    Array.prototype.splice.apply(this.wines, [...[skip, limit], ...res.data]);
+    this.wines = [...this.wines];
     this.totalWines = res.count;
     this.virtualScrollerRows = res.count < this.limit ? res.count : this.limit;
   }

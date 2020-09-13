@@ -1,13 +1,12 @@
 <div class="app-page wine-review__page">
   <div class="wine-review__content">
     <p-virtualScroller
+      #vs
       scrollHeight="100%"
       [value]="wines"
       [itemSize]="150"
       [rows]="virtualScrollerRows"
-      [cache]="true"
       [lazy]="true"
-      [totalRecords]="totalWines"
       (onLazyLoad)="loadWinesDebounce($event)"
     >
       <p-header>
@@ -82,9 +81,7 @@
             </div>
             <div class="col col-50">
               <div class="sort-by">
-                <label>
-                  Sort By:
-                </label>
+                <label> Sort By: </label>
                 <p-dropdown
                   class="sort-by-dd"
                   [options]="sortByOptions"
@@ -147,25 +144,19 @@
         <div class="item__body grid">
           <div class="row">
             <div class="col">
-              <label>
-                Variety:
-              </label>
+              <label> Variety: </label>
               <span>
                 {{ wine.variety }}
               </span>
             </div>
             <div class="col">
-              <label>
-                Winery:
-              </label>
+              <label> Winery: </label>
               <span>
                 {{ wine.winery }}
               </span>
             </div>
             <div class="col">
-              <label>
-                Country:
-              </label>
+              <label> Country: </label>
               <span>
                 {{ wine.country }}
               </span>
@@ -173,9 +164,7 @@
           </div>
           <div class="row">
             <div class="col">
-              <label>
-                Description:
-              </label>
+              <label> Description: </label>
               <span>
                 {{ wine.description }}
               </span>

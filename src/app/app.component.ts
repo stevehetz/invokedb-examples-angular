@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { InvokeDBClient } from 'invokedb';
+import { API_KEY } from 'src/invoke-config.json';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +8,5 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  ngOnInit() {}
+  async ngOnInit() {}
 }
