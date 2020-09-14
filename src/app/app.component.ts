@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { InvokeDBClient } from 'invokedb';
-import { API_KEY } from 'src/invoke-config.json';
+import { BASE_URL, API_KEY } from 'src/invoke-config.json';
 
 @Component({
   selector: 'app-root',
@@ -9,45 +9,31 @@ import { API_KEY } from 'src/invoke-config.json';
 })
 export class AppComponent implements OnInit {
   async ngOnInit() {
-    const invokedb = new InvokeDBClient({ apiKey: API_KEY });
+    const invokedb = new InvokeDBClient({ baseUrl: BASE_URL, apiKey: API_KEY });
     const contacts = invokedb.table('contacts');
+    const winereview = invokedb.table('winereview');
 
-    const res = await contacts.find({
-      skip: 10,
-      limit: 20,
-      sortBy: 'first_name',
-      sortDir: 'desc',
-      filter: {
+    const res = await contacts
+      .find({
         first_name: {
-          value: 'L',
-          type: 'contains'
+          $ctn: 'bb'
         }
-      }
-    });
+      })
+      .limit(2)
+      .skip(0)
+      .sortBy('first_name')
+      .sortDir('desc')
+      .exec();
 
     console.log(res.data);
 
-    const res2 = await contacts.findOne({
-      skip: 10,
-      sortBy: 'first_name',
-      sortDir: 'asc',
-      filter: {
-        first_name: {
-          value: 'L',
-          type: 'contains'
-        }
-      }
-    });
-
-    console.log(res2);
-
-    /*const res3 = await contacts.findOne({
+    const res3 = await contacts.findOne({
       first_name: {
-        contains: 'low',
+        $ctn: 'low',
         case: 'i'
       }
     });
 
-    console.log(res3);*/
+    console.log(res3);
   }
 }
