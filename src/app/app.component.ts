@@ -13,19 +13,9 @@ export class AppComponent implements OnInit {
     const contacts = invokedb.table('contacts');
     const winereview = invokedb.table('winereview');
 
-    const res = await contacts
-      .find({
-        first_name: {
-          $ctn: 'bb'
-        }
-      })
-      .limit(2)
-      .skip(0)
-      .sortBy('first_name')
-      .sortDir('desc')
-      .exec();
+    const res = await contacts.count();
 
-    console.log(res.data);
+    console.log(res);
 
     const res3 = await contacts.findOne({
       first_name: {
