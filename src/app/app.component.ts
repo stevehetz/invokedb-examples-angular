@@ -14,8 +14,19 @@ export class AppComponent implements OnInit {
     const winereview = invokedb.table('winereview');
 
     const res = await contacts.count();
-
     console.log(res);
+
+    const res2 = await contacts
+      .find({
+        first_name: {
+          $ctn: 'low'
+        }
+      })
+      .limit(5)
+      .skip(0)
+      .exec();
+
+    console.log(res2.data);
 
     const res3 = await contacts.findOne({
       first_name: {
@@ -25,5 +36,13 @@ export class AppComponent implements OnInit {
     });
 
     console.log(res3);
+
+    const res4 = await contacts
+      .find({ first_name: 'Lowrance' })
+      .limit(5)
+      .skip(0)
+      .exec();
+
+    console.log(res4.data);
   }
 }
