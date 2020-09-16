@@ -6,14 +6,11 @@ import { API_KEY } from 'src/invoke-config.json';
   providedIn: 'root'
 })
 export class ToDoService {
-  private _todo: InvokeDBTable;
+  private todoTbl: InvokeDBTable;
 
   constructor() {
-    const invokedbClient = new InvokeDBClient({
-      apiKey: API_KEY
-    });
-
-    this._todo = invokedbClient.table('todo');
+    const invokedbClient = new InvokeDBClient({ apiKey: API_KEY });
+    this.todoTbl = invokedbClient.table('todo');
   }
 
   async getItems(showCompleted = true) {
@@ -23,21 +20,21 @@ export class ToDoService {
       filter.isComplete = { $eq: 'no' };
     }
 
-    return await this._todo.find(filter).limit(200).exec();
+    return await this.todoTbl.find(filter).limit(200).exec();
   }
 
   async update(item) {
-    await this._todo.update(item);
+    await this.todoTbl.update(item);
   }
 
   async delete(item, items) {
-    await this._todo.delete(item._id);
+    await this.todoTbl.delete(item._id);
 
     const itemIndex = items.map(_item => _item._id).indexOf(item._id);
     items.splice(itemIndex, 1);
   }
 
   async addItem() {
-    await this._todo.insert({ name: '', isComplete: 'no' });
+    await this.todoTbl.insert({ name: '', isComplete: 'no' });
   }
 }

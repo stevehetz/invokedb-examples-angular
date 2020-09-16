@@ -2,6 +2,10 @@ import { Injectable } from '@angular/core';
 import * as moment from 'moment';
 import { IGetParams } from '../invokedb/invokedb.params';
 import { InvokedbService } from '../invokedb/invokedb.service';
+
+import { InvokeDBClient, InvokeDBTable } from 'invokedb';
+import { API_KEY } from 'src/invoke-config.json';
+
 const m: any = moment;
 m.suppressDeprecationWarnings = true;
 
@@ -9,12 +13,12 @@ m.suppressDeprecationWarnings = true;
   providedIn: 'root'
 })
 export class ContactFormService {
-  contactParams: IGetParams = {
-    skip: 0,
-    limit: 10
-  };
+  private contactsTbl: InvokeDBTable;
 
-  constructor(private invokedb: InvokedbService) {}
+  constructor(private invokedb: InvokedbService) {
+    const invokedbClient = new InvokeDBClient({ apiKey: API_KEY });
+    this.contactsTbl = invokedbClient.table('contacts');
+  }
 
   newContact() {
     return {
@@ -41,39 +45,29 @@ export class ContactFormService {
     });
   }
 
-  get(searchText, params) {
-    let filter;
+  async get(searchText, skip, limit) {
+    const filter: any = {};
     if (searchText !== '' && searchText !== null) {
-      filter = {
-        $or: {
-          first_name: {
-            value: searchText,
-            type: 'contains',
-            case: 'insensitive'
-          },
-          last_name: {
-            value: searchText,
-            type: 'contains',
-            case: 'insensitive'
-          }
-        }
-      };
+      filter.$or = {};
+      filter.$or.first_name = { $ctn: searchText };
+      filter.$or.last_name = { $ctn: searchText };
     }
-    return this.invokedb.get('contacts', params, filter);
+
+    return await this.contactsTbl.find(filter).limit(limit).skip(skip).exec();
   }
 
-  delete(id) {
-    return this.invokedb.delete('contacts', [id]);
+  async delete(id) {
+    return await this.contactsTbl.delete(id);
   }
 
-  update(contact) {
+  async update(contact) {
     const _contact = Object.assign({}, contact);
     delete _contact.full_name;
     delete _contact.prettyDate;
-    return this.invokedb.update('contacts', [_contact]);
+    return await this.contactsTbl.update(_contact);
   }
 
-  create(contact) {
-    return this.invokedb.create('contacts', [contact]);
+  async create(contact) {
+    return await this.contactsTbl.insert(contact);
   }
 }

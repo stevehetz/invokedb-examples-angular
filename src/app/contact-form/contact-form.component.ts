@@ -23,27 +23,28 @@ export class ContactFormComponent implements OnInit {
   adding = false;
   message = null;
   pageNumber = 0;
-  contactParams: IGetParams = {
-    skip: 0,
-    limit: 10
-  };
+  pageSkip = 0;
+  pageLimit = 10;
 
   constructor(private svc: ContactFormService) {}
 
-  ngOnInit(): void {
-    this.loadContacts().subscribe(res => this.selectContact(this.contacts[0]));
+  async ngOnInit() {
+    await this.loadContacts();
+    this.selectContact(this.contacts[0]);
   }
 
-  loadContacts() {
+  async loadContacts() {
     this.loadingContacts = true;
-    return this.svc.get(this.searchText, this.contactParams).pipe(
-      map((res: any) => {
-        this.totalContacts = res.count;
-        this.contacts = res.data.map(c => this.formatContact(c));
-        this.loadingContacts = false;
-        return res;
-      })
+
+    const res = await this.svc.get(
+      this.searchText,
+      this.pageSkip,
+      this.pageLimit
     );
+
+    this.totalContacts = res.count;
+    this.contacts = res.data.map(c => this.formatContact(c));
+    this.loadingContacts = false;
   }
 
   formatContact(contact) {
@@ -55,15 +56,15 @@ export class ContactFormComponent implements OnInit {
   search() {
     this.loadingContacts = true;
     window.clearTimeout(this.searchDebounce);
-    this.searchDebounce = window.setTimeout(() => {
-      this.loadContacts().subscribe();
+    this.searchDebounce = window.setTimeout(async () => {
+      await this.loadContacts();
     }, 500);
   }
 
-  paginate(event) {
+  async paginate(event) {
     this.pageNumber = event.page;
-    this.contactParams.skip = event.page * this.contactParams.limit;
-    this.loadContacts().subscribe();
+    this.pageSkip = event.page * this.pageLimit;
+    await this.loadContacts();
   }
 
   selectContact(event) {
@@ -72,7 +73,7 @@ export class ContactFormComponent implements OnInit {
     this.selectedContactIndex = null;
     this.contacts.forEach((c, i) => {
       if (c._id === this.selectedContact._id) {
-        this.selectedContactIndex = i + this.contactParams.skip;
+        this.selectedContactIndex = i + this.pageSkip;
       }
     });
   }
@@ -97,57 +98,45 @@ export class ContactFormComponent implements OnInit {
     this.editing = false;
   }
 
-  deleteContact() {
-    concat(
-      this.svc.delete(this.selectedContact._id),
-      this.loadContacts()
-    ).subscribe({
-      complete: () => {
-        this.clearSelected();
-        this.showMessage('Contact deleted');
-      }
-    });
+  async deleteContact() {
+    await this.svc.delete(this.selectedContact._id);
+    await this.loadContacts();
+    this.clearSelected();
+    this.showMessage('Contact deleted');
   }
 
-  saveContact() {
+  async saveContact() {
     if (this.editing) {
-      this.updateContact(this.selectedContact);
+      await this.updateContact(this.selectedContact);
     } else if (this.adding) {
-      this.createContact(this.selectedContact);
+      await this.createContact(this.selectedContact);
     }
   }
 
-  updateContact(contact) {
-    const onContactSaved = () => {
-      contact = this.contacts.find(c => c._id === contact._id);
-      this.selectContact(contact);
-      this.showMessage('Contact updated');
-      this.editing = false;
-    };
+  async updateContact(contact) {
+    await this.svc.update(contact);
+    await this.loadContacts();
 
-    concat(this.svc.update(contact), this.loadContacts()).subscribe({
-      complete: onContactSaved
-    });
+    contact = this.contacts.find(c => c._id === contact._id);
+    this.selectContact(contact);
+    this.showMessage('Contact updated');
+    this.editing = false;
   }
 
-  createContact(contact) {
+  async createContact(contact) {
     this.goToLastPage();
+    await this.svc.create(contact);
+    await this.loadContacts();
 
-    const onContactSaved = () => {
-      const index = this.contacts.length - 1;
-      this.selectContact(this.contacts[index]);
-      this.showMessage('Contact saved');
-      this.adding = false;
-    };
-
-    concat(this.svc.create(contact), this.loadContacts()).subscribe({
-      complete: onContactSaved
-    });
+    const index = this.contacts.length - 1;
+    this.selectContact(this.contacts[index]);
+    this.showMessage('Contact created');
+    this.adding = false;
   }
 
   goToLastPage() {
-    const { limit } = this.contactParams;
-    this.contactParams.skip = Math.floor(this.totalContacts / limit) * limit;
+    this.pageSkip =
+      Math.floor(this.totalContacts / this.pageLimit) * this.pageLimit;
   }
 
   showMessage(msg) {

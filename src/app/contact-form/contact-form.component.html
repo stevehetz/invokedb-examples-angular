@@ -3,8 +3,8 @@
     <div class="contact-form__body">
       <div class="list-box">
         <p-paginator
-          [rows]="contactParams.limit"
-          [first]="contactParams.skip"
+          [rows]="pageLimit"
+          [first]="pageSkip"
           [totalRecords]="totalContacts"
           [pageLinkSize]="3"
           (onPageChange)="paginate($event)"
