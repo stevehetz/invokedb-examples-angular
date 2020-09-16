@@ -29,7 +29,7 @@ export class AppComponent implements OnInit {
 
     const res3 = await contacts.findOne({
       first_name: {
-        $ctn: 'heather',
+        $ctn: 'abcdef',
         case: 'i'
       }
     });
@@ -44,7 +44,7 @@ export class AppComponent implements OnInit {
         }
       ]);*/
 
-      await contacts.delete(7);
+      await contacts.delete(res3._id);
     }
 
     const res4 = await contacts
