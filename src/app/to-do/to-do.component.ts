@@ -15,26 +15,27 @@ export class ToDoAppComponent implements OnInit {
   constructor(private svc: ToDoService) {}
 
   async ngOnInit() {
-    await this.getItems();
+    await this.refreshItems();
   }
 
-  async getItems() {
-    const cache = this.svc.cacheEdits(this.items);
+  async refreshItems() {
     const res = await this.svc.getItems(this.showCompleted);
-    this.items = res.data;
-    this.svc.restoreEdits(cache, this.items);
+
+    this.items = res.data.map((item, idx) =>
+      Object.assign({}, item, this.items[idx])
+    );
   }
 
   async onShowCompletedClick(show) {
     this.showCompleted = show;
-    await this.getItems();
+    await this.refreshItems();
   }
 
   async onToggleItemClick(item, isComplete) {
     if (!this.toggling) {
       item.isComplete = isComplete;
       await this.svc.update({ _id: item._id, isComplete });
-      await this.svc.getItems();
+      await this.refreshItems();
     }
   }
 
@@ -43,7 +44,7 @@ export class ToDoAppComponent implements OnInit {
       this.updating = true;
 
       await this.svc.addItem();
-      await this.getItems();
+      await this.refreshItems();
       this.editItem(this.items[this.items.length - 1]);
 
       this.updating = false;

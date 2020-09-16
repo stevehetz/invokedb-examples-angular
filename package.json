@@ -21,7 +21,7 @@
     "@angular/router": "~10.1.0",
     "@fortawesome/fontawesome-free": "^5.12.1",
     "chart.js": "^2.9.3",
-    "invokedb": "^1.0.12",
+    "invokedb": "^1.0.15",
     "moment": "^2.24.0",
     "primeicons": "^2.0.0",
     "primeng": "^9.0.0",
