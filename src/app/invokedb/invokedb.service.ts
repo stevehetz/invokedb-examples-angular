@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { BASE_URL, API_KEY } from 'src/invoke-config.json';
+import { API_KEY } from 'src/invoke-config.json';
 import { IGetParams } from './invokedb.params';
+
+const BASE_URL = 'http://localhost:8001/api/v1';
 
 @Injectable({
   providedIn: 'root'
