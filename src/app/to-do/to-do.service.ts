@@ -1,63 +1,37 @@
 import { Injectable } from '@angular/core';
-import { IGetParams } from '../invokedb/invokedb.params';
-import { InvokedbService } from '../invokedb/invokedb.service';
-import { map } from 'rxjs/operators';
+import { invokedbClient } from 'src/invokedb-client';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ToDoService {
-  constructor(private invokedb: InvokedbService) {}
+  todo = invokedbClient.table('todo');
 
-  getItems(showCompleted = true) {
-    const params: IGetParams = {
-      skip: 0,
-      limit: 200
-    };
+  constructor() {}
 
-    let filter;
+  async getItems(showCompleted = true) {
+    const filter: any = {};
 
     if (!showCompleted) {
-      filter = {
-        isComplete: {
-          value: 'no',
-          type: 'equals'
-        }
-      };
+      filter.isComplete = { $eq: 'no' };
     }
 
-    return this.invokedb
-      .get('todo', params, filter)
-      .pipe(map((res: any) => res.data));
+    return await this.todo.find(filter).limit(200).exec();
   }
 
-  getItem(id) {
-    const params: IGetParams = {
-      skip: 0,
-      limit: 1
-    };
-
-    const filter = { _id: id };
-
-    return this.invokedb
-      .get('todo', params, filter)
-      .pipe(map((res: any) => res.data[0]));
+  async update(item) {
+    await this.todo.update(item);
   }
 
-  update(item) {
-    return this.invokedb.update('todo', [item]);
-  }
+  async delete(item, items) {
+    await this.todo.delete(item._id);
 
-  delete(item, items) {
     const itemIndex = items.map(_item => _item._id).indexOf(item._id);
-    return this.invokedb
-      .delete('todo', [item._id])
-      .pipe(map(() => items.splice(itemIndex, 1)));
+    items.splice(itemIndex, 1);
   }
 
-  addItem() {
-    const item = { name: '', isComplete: 'no' };
-    return this.invokedb.create('todo', [item]);
+  async addItem() {
+    await this.todo.insert({ name: '', isComplete: 'no' });
   }
 
   cacheEdits(items) {

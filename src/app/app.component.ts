@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { InvokeDBClient } from 'invokedb';
-import { API_KEY } from 'src/invoke-config.json';
 
 @Component({
   selector: 'app-root',
