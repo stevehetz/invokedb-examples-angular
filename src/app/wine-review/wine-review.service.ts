@@ -16,10 +16,7 @@ export class WineReviewService {
   private wineReviewTbl: InvokeDBTable;
 
   constructor() {
-    const invokedbClient = new InvokeDBClient({
-      baseUrl: 'http://localhost:8001/api/v1',
-      apiKey: API_KEY
-    });
+    const invokedbClient = new InvokeDBClient({ apiKey: API_KEY });
     this.wineReviewTbl = invokedbClient.table('winereview');
   }
 
