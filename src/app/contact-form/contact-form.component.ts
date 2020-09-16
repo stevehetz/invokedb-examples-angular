@@ -1,8 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { IGetParams } from 'src/app/invokedb/invokedb.params';
-import { map } from 'rxjs/operators';
 import { ContactFormService } from './contact-form.service';
-import { concat } from 'rxjs';
 
 @Component({
   selector: 'app-contact-form',

@@ -90,10 +90,7 @@
                   optionLabel="label"
                 ></p-dropdown>
                 <div class="sort-dir-toggle">
-                  <div
-                    class="sort-dir-item"
-                    *ngIf="sortByDir === orderDirections.ASC"
-                  >
+                  <div class="sort-dir-item" *ngIf="sortDir === 'asc'">
                     <button
                       pButton
                       type="button"
@@ -101,10 +98,7 @@
                       (click)="toggleSortDir()"
                     ></button>
                   </div>
-                  <div
-                    class="sort-dir-item"
-                    *ngIf="sortByDir === orderDirections.DESC"
-                  >
+                  <div class="sort-dir-item" *ngIf="sortDir === 'desc'">
                     <button
                       pButton
                       type="button"

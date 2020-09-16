@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { IGetParams, SORT_DIR } from 'src/app/invokedb/invokedb.params';
-import { InvokedbService } from 'src/app/invokedb/invokedb.service';
-import { map } from 'rxjs/operators';
+import { InvokeDBClient, InvokeDBTable } from 'invokedb';
+import { API_KEY } from 'src/invoke-config.json';
 
 export interface IBaseFilterOpts {
   variety?: any;
@@ -14,17 +13,23 @@ export interface IBaseFilterOpts {
   providedIn: 'root'
 })
 export class WineReviewService {
-  constructor(private invokedb: InvokedbService) {}
+  private wineReviewTbl: InvokeDBTable;
+
+  constructor() {
+    const invokedbClient = new InvokeDBClient({
+      baseUrl: 'http://localhost:8001/api/v1',
+      apiKey: API_KEY
+    });
+    this.wineReviewTbl = invokedbClient.table('winereview');
+  }
 
   getPriceFilter(priceRange) {
     return [
       {
-        value: priceRange[0],
-        type: 'greaterThanOrEqual'
+        $gte: priceRange[0]
       },
       {
-        value: priceRange[1],
-        type: 'lessThanOrEqual'
+        $lte: priceRange[1]
       }
     ];
   }
@@ -32,29 +37,23 @@ export class WineReviewService {
   getPointFilter(pointRange) {
     return [
       {
-        value: pointRange[0],
-        type: 'greaterThanOrEqual'
+        $gte: pointRange[0]
       },
       {
-        value: pointRange[1],
-        type: 'lessThanOrEqual'
+        $lte: pointRange[1]
       }
     ];
   }
 
   getVarietyFilter(variety) {
     return {
-      value: variety.variety || variety,
-      type: 'contains',
-      case: 'insensitive'
+      $ctn: variety.variety || variety
     };
   }
 
   getCountryFilter(country) {
     return {
-      value: country.country || country,
-      type: 'contains',
-      case: 'insensitive'
+      $ctn: country.country || country
     };
   }
 
@@ -76,33 +75,35 @@ export class WineReviewService {
     return filter;
   }
 
-  getFilteredVarieties(filter) {
-    const params: IGetParams = {
-      skip: 0,
-      limit: 1000,
-      sort: {
-        sortBy: 'variety',
-        sortDir: SORT_DIR.ASC
-      }
-    };
+  async getFilteredVarieties(filter) {
+    const res = await this.wineReviewTbl
+      .find(filter)
+      .limit(1000)
+      .sortBy('variety')
+      .sortDir('asc')
+      .exec();
 
-    return this.getWines(params, filter).pipe(map((r: any) => r.data));
+    return res.data;
   }
 
-  getFilteredCountries(filter) {
-    const params: IGetParams = {
-      skip: 0,
-      limit: 1000,
-      sort: {
-        sortBy: 'country',
-        sortDir: SORT_DIR.ASC
-      }
-    };
+  async getFilteredCountries(filter) {
+    const res = await this.wineReviewTbl
+      .find(filter)
+      .limit(1000)
+      .sortBy('country')
+      .sortDir('asc')
+      .exec();
 
-    return this.getWines(params, filter).pipe(map((r: any) => r.data));
+    return res.data;
   }
 
-  getWines(params, filter) {
-    return this.invokedb.get('winereview', params, filter);
+  async getWines(filter, skip, limit, sortBy, sortDir) {
+    return await this.wineReviewTbl
+      .find(filter)
+      .skip(skip)
+      .limit(limit)
+      .sortBy(sortBy)
+      .sortDir(sortDir)
+      .exec();
   }
 }

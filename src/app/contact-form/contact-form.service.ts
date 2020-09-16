@@ -1,10 +1,7 @@
 import { Injectable } from '@angular/core';
-import * as moment from 'moment';
-import { IGetParams } from '../invokedb/invokedb.params';
-import { InvokedbService } from '../invokedb/invokedb.service';
-
 import { InvokeDBClient, InvokeDBTable } from 'invokedb';
 import { API_KEY } from 'src/invoke-config.json';
+import * as moment from 'moment';
 
 const m: any = moment;
 m.suppressDeprecationWarnings = true;
@@ -15,7 +12,7 @@ m.suppressDeprecationWarnings = true;
 export class ContactFormService {
   private contactsTbl: InvokeDBTable;
 
-  constructor(private invokedb: InvokedbService) {
+  constructor() {
     const invokedbClient = new InvokeDBClient({ apiKey: API_KEY });
     this.contactsTbl = invokedbClient.table('contacts');
   }
