@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { finalize, map } from 'rxjs/operators';
 import { ToDoService } from './to-do.service';
-import { concat } from 'rxjs';
 
 @Component({
   selector: 'app-to-do',
@@ -16,44 +14,39 @@ export class ToDoAppComponent implements OnInit {
 
   constructor(private svc: ToDoService) {}
 
-  ngOnInit(): void {
-    this.getItems().subscribe();
+  async ngOnInit() {
+    await this.getItems();
   }
 
-  getItems() {
+  async getItems() {
     const cache = this.svc.cacheEdits(this.items);
-
-    return this.svc.getItems(this.showCompleted).pipe(
-      map(items => (this.items = items)),
-      map(() => this.svc.restoreEdits(cache, this.items))
-    );
+    const res = await this.svc.getItems(this.showCompleted);
+    this.items = res.data;
+    this.svc.restoreEdits(cache, this.items);
   }
 
-  onShowCompletedClick(show) {
+  async onShowCompletedClick(show) {
     this.showCompleted = show;
-    this.getItems().subscribe();
+    await this.getItems();
   }
 
-  onToggleItemClick(item, isComplete) {
+  async onToggleItemClick(item, isComplete) {
     if (!this.toggling) {
       item.isComplete = isComplete;
-      this.updateItem({ _id: item._id, isComplete }).subscribe();
+      await this.svc.update({ _id: item._id, isComplete });
+      await this.svc.getItems();
     }
   }
 
-  updateItem(item) {
-    return concat(this.svc.update(item), this.getItems()).pipe();
-  }
-
-  addItem() {
+  async addItem() {
     if (!this.updating) {
       this.updating = true;
 
-      concat(this.svc.addItem(), this.getItems())
-        .pipe(finalize(() => (this.updating = false)))
-        .subscribe({
-          complete: () => this.editItem(this.items[this.items.length - 1])
-        });
+      await this.svc.addItem();
+      await this.getItems();
+      this.editItem(this.items[this.items.length - 1]);
+
+      this.updating = false;
     }
   }
 
@@ -64,13 +57,13 @@ export class ToDoAppComponent implements OnInit {
     }
   }
 
-  deleteItem(item) {
+  async deleteItem(item) {
     if (!this.updating) {
       this.updating = true;
-      this.svc
-        .delete(item, this.items)
-        .pipe(finalize(() => (this.updating = false)))
-        .subscribe();
+
+      await this.svc.delete(item, this.items);
+
+      this.updating = false;
     }
   }
 
@@ -79,11 +72,11 @@ export class ToDoAppComponent implements OnInit {
     item.edit = false;
   }
 
-  saveItem(item) {
+  async saveItem(item) {
     item = { _id: item._id, name: item.name };
-    this.updateItem(item).subscribe(() => {
-      const _item = this.items.find(i => i._id === item._id);
-      _item.edit = false;
-    });
+    await this.svc.update(item);
+
+    const _item = this.items.find(i => i._id === item._id);
+    _item.edit = false;
   }
 }
